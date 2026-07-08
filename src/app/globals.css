@@ -84,19 +84,6 @@ body {
   pointer-events: auto;
 }
 
-/* ---- Expandable details panel ---- */
-.details-panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.32s ease, padding 0.2s ease;
-  padding: 0 24px;
-}
-
-.details-panel.open {
-  max-height: 240px;
-  padding: 16px 24px 20px;
-}
-
 /* ---- Remove number input spinners ---- */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
