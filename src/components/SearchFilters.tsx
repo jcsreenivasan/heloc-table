@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { ChevronDown, Grid2X2, Info } from "lucide-react";
 
-export default function SearchFilters() {
+interface Props {
+  onSeeRates?: () => void;
+}
+
+export default function SearchFilters({ onSeeRates }: Props) {
   const [zipCode, setZipCode] = useState("32202");
   const [loanType, setLoanType] = useState("HELOC");
   const [propertyValue, setPropertyValue] = useState("515000");
@@ -24,12 +28,10 @@ export default function SearchFilters() {
 
   return (
     <div>
+      {/* Title — black */}
       <p style={titleStyle}>PERSONALIZE YOUR SEARCH</p>
 
-      {/*
-        5-column CSS grid → every field gets exactly 1fr width.
-        8 fields auto-flow into 2 rows of 5 → 5 + 3 layout.
-      */}
+      {/* 5-column grid — all fields equal 1fr width */}
       <div style={gridStyle}>
 
         {/* 1 — ZIP Code */}
@@ -62,10 +64,7 @@ export default function SearchFilters() {
               <Info size={11} color="var(--brand-primary)" />
             </span>
           </label>
-          <SelectField
-            value={loanType}
-            onChange={(e) => setLoanType(e.target.value)}
-          >
+          <SelectField value={loanType} onChange={(e) => setLoanType(e.target.value)}>
             <option value="HELOC">HELOC</option>
             <option value="Home Equity Loan">Home Equity Loan</option>
             <option value="Cash-Out Refinance">Cash-Out Refinance</option>
@@ -75,37 +74,25 @@ export default function SearchFilters() {
         {/* 3 — Property value */}
         <div>
           <label style={labelStyle}>Property value</label>
-          <MoneyField
-            value={fmt(propertyValue)}
-            onChange={(e) => handleNum(e, setPropertyValue)}
-          />
+          <MoneyField value={fmt(propertyValue)} onChange={(e) => handleNum(e, setPropertyValue)} />
         </div>
 
         {/* 4 — Remaining mortgage balance */}
         <div>
           <label style={labelStyle}>Remaining mortgage balance</label>
-          <MoneyField
-            value={fmt(mortgageBalance)}
-            onChange={(e) => handleNum(e, setMortgageBalance)}
-          />
+          <MoneyField value={fmt(mortgageBalance)} onChange={(e) => handleNum(e, setMortgageBalance)} />
         </div>
 
         {/* 5 — Loan amount */}
         <div>
           <label style={labelStyle}>Loan amount</label>
-          <MoneyField
-            value={fmt(loanAmount)}
-            onChange={(e) => handleNum(e, setLoanAmount)}
-          />
+          <MoneyField value={fmt(loanAmount)} onChange={(e) => handleNum(e, setLoanAmount)} />
         </div>
 
         {/* 6 — Credit score */}
         <div>
           <label style={labelStyle}>Credit score</label>
-          <SelectField
-            value={creditScore}
-            onChange={(e) => setCreditScore(e.target.value)}
-          >
+          <SelectField value={creditScore} onChange={(e) => setCreditScore(e.target.value)}>
             <option value="exceptional">Exceptional (800+)</option>
             <option value="very-good">Very good (740–799)</option>
             <option value="good">Good (670–739)</option>
@@ -117,10 +104,7 @@ export default function SearchFilters() {
         {/* 7 — Property use */}
         <div>
           <label style={labelStyle}>Property use</label>
-          <SelectField
-            value={propertyUse}
-            onChange={(e) => setPropertyUse(e.target.value)}
-          >
+          <SelectField value={propertyUse} onChange={(e) => setPropertyUse(e.target.value)}>
             <option value="primary">Primary Residence</option>
             <option value="second">Second Home</option>
             <option value="investment">Investment Property</option>
@@ -130,10 +114,7 @@ export default function SearchFilters() {
         {/* 8 — Property type */}
         <div>
           <label style={labelStyle}>Property type</label>
-          <SelectField
-            value={propertyType}
-            onChange={(e) => setPropertyType(e.target.value)}
-          >
+          <SelectField value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
             <option value="single">Single Family</option>
             <option value="condo">Condo / Co-op</option>
             <option value="townhouse">Townhouse</option>
@@ -142,12 +123,31 @@ export default function SearchFilters() {
           </SelectField>
         </div>
 
+        {/* 9 — See Rates button (aligns to bottom of cell, same height as inputs) */}
+        <div style={{ alignSelf: "end" }}>
+          <button
+            type="button"
+            onClick={onSeeRates}
+            style={seeRatesStyle}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLButtonElement).style.background =
+                "var(--brand-primary-dark)")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLButtonElement).style.background =
+                "var(--brand-primary)")
+            }
+          >
+            See Rates
+          </button>
+        </div>
+
       </div>
     </div>
   );
 }
 
-/* ── Reusable sub-components ── */
+/* ── Sub-components ── */
 
 function SelectField({
   value,
@@ -223,11 +223,10 @@ const titleStyle: React.CSSProperties = {
   fontSize: 11,
   letterSpacing: "0.08em",
   textTransform: "uppercase",
-  color: "#94a3b8",
+  color: "#111827",   /* black */
   marginBottom: 16,
 };
 
-/* Equal-width 5-column grid — all 8 fields get 1fr */
 const gridStyle: React.CSSProperties = {
   display: "grid",
   gridTemplateColumns: "repeat(5, 1fr)",
@@ -273,4 +272,19 @@ const iconBtnStyle: React.CSSProperties = {
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
+};
+
+const seeRatesStyle: React.CSSProperties = {
+  width: "100%",
+  height: 40,
+  background: "var(--brand-primary)",
+  color: "#ffffff",
+  border: "none",
+  borderRadius: 8,
+  fontSize: 13,
+  fontWeight: 700,
+  cursor: "pointer",
+  fontFamily: "inherit",
+  letterSpacing: "0.02em",
+  transition: "background 0.15s ease",
 };

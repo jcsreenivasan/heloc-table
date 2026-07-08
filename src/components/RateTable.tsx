@@ -20,13 +20,13 @@ function Divider() {
         background: "var(--brand-stat-divider)",
         alignSelf: "stretch",
         flexShrink: 0,
-        margin: "14px 0",
+        margin: "10px 0",
       }}
     />
   );
 }
 
-/* ── One stat section inside the card ── */
+/* ── One labeled stat section inside the card ── */
 function StatSection({
   label,
   children,
@@ -39,7 +39,7 @@ function StatSection({
   return (
     <div
       style={{
-        padding: "20px 26px",
+        padding: "12px 22px",          /* ↓ 30% shorter than previous 20px 26px */
         flexShrink: width ? 0 : undefined,
         flex: width ? undefined : "1 1 0",
         width: width,
@@ -52,8 +52,8 @@ function StatSection({
           fontWeight: 700,
           letterSpacing: "0.09em",
           textTransform: "uppercase",
-          color: "#94a3b8",
-          marginBottom: 8,
+          color: "#64748b",            /* darker — was #94a3b8 */
+          marginBottom: 5,
         }}
       >
         {label}
@@ -64,7 +64,7 @@ function StatSection({
 }
 
 /* ── Individual rate card ── */
-function RateCard({ lender }: { lender: Lender }) {
+function RateCard({ lender, index }: { lender: Lender; index: number }) {
   return (
     <div
       className="rate-card"
@@ -76,16 +76,18 @@ function RateCard({ lender }: { lender: Lender }) {
         borderRadius: 12,
         boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
         overflow: "hidden",
+        animation: "cardFadeIn 0.3s ease both",
+        animationDelay: `${index * 40}ms`,
       }}
     >
-      {/* ── Rate — hero, in brand blue ── */}
-      <StatSection label="Rate" width={170}>
+      {/* Rate — black, not blue */}
+      <StatSection label="Rate" width={160}>
         <p style={{ lineHeight: 1 }}>
           <span
             style={{
-              fontSize: 28,
+              fontSize: 24,            /* was 28 */
               fontWeight: 800,
-              color: "var(--brand-primary)",
+              color: "#0f172a",        /* black — was brand blue */
               letterSpacing: "-0.03em",
             }}
           >
@@ -93,9 +95,9 @@ function RateCard({ lender }: { lender: Lender }) {
           </span>
           <span
             style={{
-              fontSize: 17,
+              fontSize: 15,            /* was 17 */
               fontWeight: 700,
-              color: "var(--brand-primary)",
+              color: "#0f172a",        /* black */
               marginLeft: 1,
             }}
           >
@@ -108,7 +110,7 @@ function RateCard({ lender }: { lender: Lender }) {
           className="fees-link"
           style={{
             display: "inline-block",
-            marginTop: 8,
+            marginTop: 6,
             fontSize: 11,
             fontWeight: 600,
             color: "var(--brand-link-color)",
@@ -121,34 +123,34 @@ function RateCard({ lender }: { lender: Lender }) {
 
       <Divider />
 
-      {/* ── APR ── */}
+      {/* APR */}
       <StatSection label="APR">
         <p style={boldStatStyle}>{lender.apr}%</p>
       </StatSection>
 
       <Divider />
 
-      {/* ── Loan term ── */}
+      {/* Loan term */}
       <StatSection label="Loan term">
         <p style={boldStatStyle}>{lender.loanTerm}</p>
       </StatSection>
 
       <Divider />
 
-      {/* ── Loan amount ── */}
+      {/* Loan amount */}
       <StatSection label="Loan amount">
         <p style={boldStatStyle}>
           {lender.loanAmountMin}–{lender.loanAmountMax}
         </p>
       </StatSection>
 
-      {/* ── CTA — slides in on hover ── */}
+      {/* CTA — slides in on hover */}
       <div
         className="cta-cell"
         style={{
           display: "flex",
           alignItems: "center",
-          paddingRight: 24,
+          paddingRight: 20,
           paddingLeft: 8,
           flexShrink: 0,
         }}
@@ -167,14 +169,14 @@ function RateCard({ lender }: { lender: Lender }) {
           }
         >
           Check rate
-          <ArrowRight size={15} strokeWidth={2.5} />
+          <ArrowRight size={14} strokeWidth={2.5} />
         </a>
       </div>
     </div>
   );
 }
 
-/* ── Controls: loan term tabs (left) + sort by (right) ── */
+/* ── Controls: loan term tabs + sort by ── */
 function ControlsBar({
   activeTerm,
   onTermChange,
@@ -199,15 +201,7 @@ function ControlsBar({
     >
       {/* Loan term tabs */}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-        <span
-          style={{
-            fontSize: 12,
-            fontWeight: 700,
-            color: "#64748b",
-            marginRight: 2,
-            whiteSpace: "nowrap",
-          }}
-        >
+        <span style={{ fontSize: 12, fontWeight: 700, color: "#475569", marginRight: 2, whiteSpace: "nowrap" }}>
           Loan term:
         </span>
         {LOAN_TERMS.map((term) => {
@@ -255,14 +249,7 @@ function ControlsBar({
 
       {/* Sort by */}
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span
-          style={{
-            fontSize: 12,
-            fontWeight: 600,
-            color: "#94a3b8",
-            whiteSpace: "nowrap",
-          }}
-        >
+        <span style={{ fontSize: 12, fontWeight: 600, color: "#64748b", whiteSpace: "nowrap" }}>
           Sort by
         </span>
         <div style={{ position: "relative" }}>
@@ -316,8 +303,7 @@ export default function RateTable() {
       : lenders;
 
     return [...filtered].sort((a, b) => {
-      if (sortBy === "lowest-apr")
-        return parseFloat(a.apr) - parseFloat(b.apr);
+      if (sortBy === "lowest-apr") return parseFloat(a.apr) - parseFloat(b.apr);
       if (sortBy === "highest-amount")
         return parseMaxAmount(b.loanAmountMax) - parseMaxAmount(a.loanAmountMax);
       return 0;
@@ -338,7 +324,7 @@ export default function RateTable() {
           style={{
             padding: "48px 24px",
             textAlign: "center",
-            color: "#94a3b8",
+            color: "#64748b",
             fontSize: 14,
             fontWeight: 500,
             background: "#f8fafc",
@@ -349,18 +335,18 @@ export default function RateTable() {
           No lenders found for this loan term.
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {displayed.map((lender) => (
-            <RateCard key={lender.id} lender={lender} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {displayed.map((lender, i) => (
+            <RateCard key={lender.id} lender={lender} index={i} />
           ))}
         </div>
       )}
 
       <p
         style={{
-          marginTop: 18,
+          marginTop: 16,
           fontSize: 11,
-          color: "#b0b7c3",
+          color: "#64748b",             /* darker — was #b0b7c3 */
           lineHeight: 1.7,
           padding: "0 2px",
         }}
@@ -382,9 +368,8 @@ export default function RateTable() {
 
 /* ── Style constants ── */
 
-/** Secondary stats: bold + dark — fully legible, not muted */
 const boldStatStyle: React.CSSProperties = {
-  fontSize: 20,
+  fontSize: 18,                        /* was 20 — proportionally reduced */
   fontWeight: 700,
   color: "#1e293b",
   letterSpacing: "-0.02em",
@@ -399,8 +384,8 @@ const ctaStyle: React.CSSProperties = {
   color: "var(--brand-cta-text)",
   borderRadius: "var(--brand-cta-radius)",
   fontWeight: 700,
-  fontSize: 14,
-  padding: "11px 22px",
+  fontSize: 13,
+  padding: "10px 20px",
   textDecoration: "none",
   whiteSpace: "nowrap",
   fontFamily: "inherit",
