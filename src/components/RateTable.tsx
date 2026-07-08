@@ -1,96 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, ChevronDown, ChevronUp, Info } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 import { lenders, type Lender } from "@/data/lenders";
 
-/* ---- Vertical divider between stat sections ---- */
-function StatDivider() {
-  return (
-    <div
-      style={{
-        width: 1,
-        alignSelf: "stretch",
-        background: "var(--brand-stat-divider)",
-        margin: "0 4px",
-        flexShrink: 0,
-      }}
-    />
-  );
-}
-
-/* ---- A single labeled stat block ---- */
-function Stat({
-  label,
-  value,
-  sub,
-  tooltip,
-  minWidth,
-}: {
-  label: string;
-  value: string;
-  sub?: React.ReactNode;
-  tooltip?: string;
-  minWidth?: number;
-}) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 4,
-        padding: "18px 24px",
-        minWidth: minWidth ?? 110,
-        flex: "1 1 auto",
-      }}
-    >
-      {/* Label row */}
-      <span
-        style={{
-          fontSize: 10,
-          fontWeight: 700,
-          letterSpacing: "0.07em",
-          textTransform: "uppercase",
-          color: "var(--brand-text-secondary)",
-          display: "flex",
-          alignItems: "center",
-          gap: 4,
-        }}
-      >
-        {label}
-        {tooltip && (
-          <span
-            className="info-tooltip"
-            data-tooltip={tooltip}
-            style={{ cursor: "help" }}
-          >
-            <Info size={11} color="var(--brand-text-muted)" />
-          </span>
-        )}
-      </span>
-
-      {/* Value */}
-      <span
-        style={{
-          fontSize: 22,
-          fontWeight: 800,
-          color: "var(--brand-text-primary)",
-          letterSpacing: "-0.025em",
-          lineHeight: 1.15,
-        }}
-      >
-        {value}
-      </span>
-
-      {/* Sub (fees link or extra text) */}
-      {sub && (
-        <span style={{ fontSize: 12, marginTop: 1 }}>{sub}</span>
-      )}
-    </div>
-  );
-}
-
-/* ---- Expandable details grid ---- */
+/* ---- Expandable details panel ---- */
 function DetailsPanel({ lender, open }: { lender: Lender; open: boolean }) {
   const items = [
     { label: "Draw period", value: lender.details.drawPeriod },
@@ -109,35 +23,32 @@ function DetailsPanel({ lender, open }: { lender: Lender; open: boolean }) {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "14px 28px",
+          gap: "16px 32px",
         }}
       >
         {items.map((item) => (
           <div key={item.label}>
-            <p
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                color: "var(--brand-text-secondary)",
-                textTransform: "uppercase",
-                letterSpacing: "0.06em",
-                marginBottom: 3,
-              }}
-            >
-              {item.label}
-            </p>
-            <p
-              style={{
-                fontSize: 14,
-                fontWeight: 600,
-                color: "var(--brand-text-primary)",
-              }}
-            >
-              {item.value}
-            </p>
+            <p style={detailLabelStyle}>{item.label}</p>
+            <p style={detailValueStyle}>{item.value}</p>
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+/* ---- Single secondary stat (APR / Term / Amount) ---- */
+function SecondaryStatItem({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div>
+      <p style={secLabelStyle}>{label}</p>
+      <p style={secValueStyle}>{value}</p>
     </div>
   );
 }
@@ -148,146 +59,117 @@ function RateCard({ lender }: { lender: Lender }) {
 
   return (
     <div
+      className="rate-card"
       style={{
-        borderRadius: 12,
-        border: `1px solid var(--brand-card-border)`,
+        borderRadius: 14,
+        border: "1px solid #ebebed",
         background: "#ffffff",
         overflow: "hidden",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
       }}
     >
-      {/* Main horizontal card row */}
+      {/* ── Main content row ── */}
       <div
-        className="rate-card"
         style={{
           display: "flex",
-          alignItems: "stretch",
-          borderRadius: expanded ? "12px 12px 0 0" : 12,
+          alignItems: "center",
+          padding: "22px 24px 22px 28px",
+          gap: 0,
         }}
       >
-        {/* Rate */}
-        <Stat
-          label="Rate"
-          value={`${lender.rate}%`}
-          minWidth={130}
-          sub={
-            <a
-              href="#"
-              onClick={(e) => e.preventDefault()}
-              style={{
-                color: "var(--brand-link-color)",
-                textDecoration: "none",
-                fontWeight: 500,
-              }}
-            >
-              Fees &amp; conditions
-            </a>
-          }
-        />
+        {/* Rate — the only hero number */}
+        <div style={{ flexShrink: 0, paddingRight: 36 }}>
+          <p style={heroLabelStyle}>Rate</p>
+          <p style={{ lineHeight: 1, margin: "6px 0 0" }}>
+            <span style={heroNumberStyle}>{lender.rate}</span>
+            <span style={heroUnitStyle}>%</span>
+          </p>
+          <a
+            href="#"
+            onClick={(e) => e.preventDefault()}
+            style={feesLinkStyle}
+          >
+            Fees &amp; conditions
+          </a>
+        </div>
 
-        <StatDivider />
-
-        {/* APR */}
-        <Stat
-          label="APR"
-          tooltip="Annual Percentage Rate – includes fees and costs"
-          value={`${lender.apr}%`}
-          minWidth={110}
-        />
-
-        <StatDivider />
-
-        {/* Loan term */}
-        <Stat
-          label="Loan term"
-          value={lender.loanTerm}
-          minWidth={100}
-        />
-
-        <StatDivider />
-
-        {/* Loan amount */}
-        <Stat
-          label="Loan amount"
-          tooltip="Min and max available loan amounts"
-          value={`${lender.loanAmountMin}–${lender.loanAmountMax}`}
-          minWidth={140}
-          sub={
-            <button
-              onClick={() => setExpanded((v) => !v)}
-              style={{
-                background: "none",
-                border: "none",
-                color: "var(--brand-link-color)",
-                fontSize: 12,
-                fontWeight: 500,
-                cursor: "pointer",
-                padding: 0,
-                display: "flex",
-                alignItems: "center",
-                gap: 3,
-                fontFamily: "inherit",
-              }}
-            >
-              {expanded ? "Hide details" : "Show more details"}
-              {expanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
-            </button>
-          }
-        />
-
-        {/* CTA — hidden by default, slides in on hover */}
+        {/* Thin hairline between hero rate and secondary stats */}
         <div
-          className="cta-cell"
+          style={{
+            width: 1,
+            height: 44,
+            background: "#ebebed",
+            flexShrink: 0,
+          }}
+        />
+
+        {/* Secondary stats — light, understated */}
+        <div
           style={{
             display: "flex",
             alignItems: "center",
-            padding: "0 24px 0 12px",
-            flexShrink: 0,
+            gap: 40,
+            flex: 1,
+            paddingLeft: 36,
           }}
+        >
+          <SecondaryStatItem label="APR" value={`${lender.apr}%`} />
+          <SecondaryStatItem label="Loan term" value={lender.loanTerm} />
+          <SecondaryStatItem
+            label="Loan amount"
+            value={`${lender.loanAmountMin}–${lender.loanAmountMax}`}
+          />
+        </div>
+
+        {/* CTA — hidden by default, slides in from right on hover */}
+        <div
+          className="cta-cell"
+          style={{ flexShrink: 0, paddingLeft: 20 }}
         >
           <a
             href="#"
             onClick={(e) => e.preventDefault()}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 7,
-              background: "var(--brand-cta-bg)",
-              color: "var(--brand-cta-text)",
-              borderRadius: "var(--brand-cta-radius)",
-              fontWeight: 700,
-              fontSize: 14,
-              padding: "11px 22px",
-              textDecoration: "none",
-              transition: "background 0.15s ease, transform 0.12s ease",
-              whiteSpace: "nowrap",
-              fontFamily: "inherit",
-              letterSpacing: "0.01em",
-            }}
+            style={ctaStyle}
             onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLAnchorElement;
-              el.style.background = "var(--brand-cta-hover-bg)";
-              el.style.transform = "scale(1.03)";
+              (e.currentTarget as HTMLAnchorElement).style.background =
+                "var(--brand-cta-hover-bg)";
             }}
             onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLAnchorElement;
-              el.style.background = "var(--brand-cta-bg)";
-              el.style.transform = "scale(1)";
+              (e.currentTarget as HTMLAnchorElement).style.background =
+                "var(--brand-cta-bg)";
             }}
           >
-            Next
-            <ArrowRight size={15} strokeWidth={2.5} />
+            Check rate
+            <ArrowRight size={14} strokeWidth={2.5} />
           </a>
         </div>
       </div>
 
-      {/* Expandable details */}
+      {/* ── Footer: expand toggle ── */}
       <div
         style={{
-          borderTop: expanded
-            ? "1px solid var(--brand-stat-divider)"
-            : "none",
-          background: "#f8fafc",
+          borderTop: "1px solid #f4f4f6",
+          padding: "7px 28px",
+        }}
+      >
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          style={toggleStyle}
+        >
+          {expanded ? "Hide details" : "Show more details"}
+          {expanded ? (
+            <ChevronUp size={11} strokeWidth={2} />
+          ) : (
+            <ChevronDown size={11} strokeWidth={2} />
+          )}
+        </button>
+      </div>
+
+      {/* ── Expandable details ── */}
+      <div
+        style={{
+          borderTop: expanded ? "1px solid #f0f0f3" : "none",
+          background: "#fafafa",
         }}
       >
         <DetailsPanel lender={lender} open={expanded} />
@@ -300,23 +182,13 @@ function RateCard({ lender }: { lender: Lender }) {
 export default function RateTable() {
   return (
     <div>
-      {/* Cards list */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {lenders.map((lender) => (
           <RateCard key={lender.id} lender={lender} />
         ))}
       </div>
 
-      {/* Disclaimer */}
-      <p
-        style={{
-          marginTop: 16,
-          fontSize: 11,
-          color: "var(--brand-text-muted)",
-          lineHeight: 1.6,
-          padding: "0 4px",
-        }}
-      >
+      <p style={disclaimerStyle}>
         Rates shown are based on the personalized search criteria above. APR
         shown is for a $100,000 HELOC. Your actual rate may differ based on
         credit profile, loan-to-value ratio, and lender criteria. All rates as
@@ -331,3 +203,116 @@ export default function RateTable() {
     </div>
   );
 }
+
+/* ================================================================
+   Style constants — all in one place for easy tuning
+   ================================================================ */
+
+/** The only bold element — the rate percentage */
+const heroNumberStyle: React.CSSProperties = {
+  fontSize: 34,
+  fontWeight: 800,
+  color: "#0f172a",
+  letterSpacing: "-0.03em",
+};
+
+const heroUnitStyle: React.CSSProperties = {
+  fontSize: 20,
+  fontWeight: 700,
+  color: "#0f172a",
+  letterSpacing: "-0.02em",
+  marginLeft: 1,
+};
+
+const heroLabelStyle: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: "0.08em",
+  textTransform: "uppercase",
+  color: "#b0b7c3",
+  margin: 0,
+};
+
+const feesLinkStyle: React.CSSProperties = {
+  display: "block",
+  marginTop: 7,
+  fontSize: 11,
+  fontWeight: 500,
+  color: "var(--brand-link-color)",
+  textDecoration: "none",
+};
+
+/** Secondary stats — intentionally lightweight */
+const secLabelStyle: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: "0.07em",
+  textTransform: "uppercase",
+  color: "#b0b7c3",
+  margin: "0 0 5px",
+};
+
+const secValueStyle: React.CSSProperties = {
+  fontSize: 15,
+  fontWeight: 400,
+  color: "#6b7280",
+  letterSpacing: "-0.01em",
+  margin: 0,
+};
+
+const ctaStyle: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 7,
+  background: "var(--brand-cta-bg)",
+  color: "var(--brand-cta-text)",
+  borderRadius: "var(--brand-cta-radius)",
+  fontWeight: 600,
+  fontSize: 13,
+  padding: "10px 20px",
+  textDecoration: "none",
+  whiteSpace: "nowrap",
+  fontFamily: "inherit",
+  letterSpacing: "0.01em",
+  transition: "background 0.15s ease",
+};
+
+const toggleStyle: React.CSSProperties = {
+  background: "none",
+  border: "none",
+  padding: 0,
+  color: "#b0b7c3",
+  fontSize: 11,
+  fontWeight: 400,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  gap: 4,
+  fontFamily: "inherit",
+  letterSpacing: "0.01em",
+  transition: "color 0.15s ease",
+};
+
+const detailLabelStyle: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  color: "#b0b7c3",
+  textTransform: "uppercase",
+  letterSpacing: "0.06em",
+  margin: "0 0 4px",
+};
+
+const detailValueStyle: React.CSSProperties = {
+  fontSize: 13,
+  fontWeight: 500,
+  color: "#374151",
+  margin: 0,
+};
+
+const disclaimerStyle: React.CSSProperties = {
+  marginTop: 16,
+  fontSize: 11,
+  color: "#c4c9d4",
+  lineHeight: 1.7,
+  padding: "0 2px",
+};

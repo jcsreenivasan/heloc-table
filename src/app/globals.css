@@ -58,23 +58,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ---- Rate card hover: background + border animate ---- */
+/* ---- Rate card hover: subtle shift, no heavy color change ---- */
 .rate-card {
-  transition: background-color 0.18s ease, border-color 0.18s ease,
-    box-shadow 0.2s ease;
+  transition: border-color 0.18s ease, box-shadow 0.2s ease,
+    background-color 0.18s ease;
 }
 
 .rate-card:hover {
-  background-color: var(--brand-card-hover-bg);
-  border-color: var(--brand-card-hover-border) !important;
-  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.1);
+  background-color: #fafcff;
+  border-color: #c7d7fd !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.07);
 }
 
 /* ---- CTA slides in from right on card hover ---- */
 .rate-card .cta-cell {
   opacity: 0;
-  transform: translateX(14px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  transform: translateX(16px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
 }
 
