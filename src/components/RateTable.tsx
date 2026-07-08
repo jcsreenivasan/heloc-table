@@ -74,7 +74,7 @@ function RateCard({ lender, index }: { lender: Lender; index: number }) {
         background: "#ffffff",
         border: "1px solid var(--brand-card-border)",
         borderRadius: 12,
-        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+        boxShadow: "none",
         overflow: "hidden",
         animation: "cardFadeIn 0.3s ease both",
         animationDelay: `${index * 40}ms`,
@@ -291,10 +291,13 @@ function ControlsBar({
   );
 }
 
+const DEFAULT_VISIBLE = 6;
+
 /* ── Main export ── */
 export default function RateTable() {
   const [activeTerm, setActiveTerm] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState("lowest-apr");
+  const [showAll, setShowAll] = useState(false);
 
   const displayed = useMemo(() => {
     const termFilter = activeTerm?.toLowerCase() ?? null;
@@ -332,14 +335,66 @@ export default function RateTable() {
             border: "1px solid #e2e8f0",
           }}
         >
-          No lenders found for this loan term.
+          No matching offers found.
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {displayed.map((lender, i) => (
-            <RateCard key={lender.id} lender={lender} index={i} />
-          ))}
-        </div>
+        <>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {(showAll ? displayed : displayed.slice(0, DEFAULT_VISIBLE)).map(
+              (lender, i) => (
+                <RateCard key={lender.id} lender={lender} index={i} />
+              )
+            )}
+          </div>
+
+          {/* Show more / collapse toggle */}
+          {displayed.length > DEFAULT_VISIBLE && (
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                width: "100%",
+                marginTop: 10,
+                padding: "12px",
+                background: "transparent",
+                border: "1px dashed #cbd5e1",
+                borderRadius: 10,
+                color: "var(--brand-primary)",
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                fontFamily: "inherit",
+                letterSpacing: "0.01em",
+                transition: "background 0.15s ease, border-color 0.15s ease",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLButtonElement;
+                el.style.background = "var(--brand-primary-light)";
+                el.style.borderColor = "var(--brand-primary)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLButtonElement;
+                el.style.background = "transparent";
+                el.style.borderColor = "#cbd5e1";
+              }}
+            >
+              <ChevronDown
+                size={15}
+                style={{
+                  transition: "transform 0.2s ease",
+                  transform: showAll ? "rotate(180deg)" : "rotate(0deg)",
+                }}
+              />
+              {showAll
+                ? "Show fewer options"
+                : `See more rate options (${displayed.length - DEFAULT_VISIBLE} more)`}
+            </button>
+          )}
+        </>
       )}
 
       <p
