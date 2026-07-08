@@ -7,41 +7,33 @@ export default function Home() {
       style={{
         minHeight: "100vh",
         background: "var(--brand-page-bg)",
-        padding: "32px 24px 64px",
+        padding: "40px 24px 72px",
       }}
     >
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        {/* Page heading */}
-        <div style={{ marginBottom: 24 }}>
-          <h1
-            style={{
-              margin: "0 0 6px",
-              fontSize: 28,
-              fontWeight: 800,
-              color: "var(--brand-text-primary)",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Today&apos;s Best HELOC Rates
-          </h1>
-          <p
-            style={{
-              margin: 0,
-              fontSize: 15,
-              color: "var(--brand-text-secondary)",
-            }}
-          >
-            Compare rates from top lenders — updated daily.
-          </p>
-        </div>
+      <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+        {/* Unified card: filters + results in one container */}
+        <div
+          style={{
+            background: "#ffffff",
+            borderRadius: 16,
+            border: "1px solid #e5e7eb",
+            boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+            overflow: "visible",
+          }}
+        >
+          {/* Top: filter section */}
+          <div style={{ padding: "24px 28px 20px" }}>
+            <SearchFilters />
+          </div>
 
-        {/* Search filter bar */}
-        <div style={{ marginBottom: 20 }}>
-          <SearchFilters />
-        </div>
+          {/* Divider */}
+          <div style={{ height: 1, background: "#e5e7eb" }} />
 
-        {/* Rate table */}
-        <RateTable />
+          {/* Bottom: rate cards */}
+          <div style={{ padding: "20px 28px 24px" }}>
+            <RateTable />
+          </div>
+        </div>
       </div>
     </main>
   );
