@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { useState, useMemo, Fragment } from "react";
+import { ArrowRight, ChevronDown, Home, DollarSign } from "lucide-react";
 import { lenders, type Lender } from "@/data/lenders";
 
 const LOAN_TERMS = ["5 Year", "10 Year", "15 Year", "20 Year", "30 Year"];
@@ -176,6 +176,113 @@ function RateCard({ lender, index }: { lender: Lender; index: number }) {
   );
 }
 
+/* ── Promotional banner ── */
+function PersonalizeRateBanner() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "18px 24px",
+        border: "1px solid #bfdbfe",
+        borderRadius: 12,
+        background: "#eff6ff",
+        gap: 16,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        {/* Icon block */}
+        <div
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: 12,
+            background: "#dbeafe",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+            position: "relative",
+          }}
+        >
+          <Home size={26} color="var(--brand-primary)" strokeWidth={1.8} />
+          <div
+            style={{
+              position: "absolute",
+              bottom: 7,
+              right: 6,
+              background: "var(--brand-primary)",
+              borderRadius: "50%",
+              width: 18,
+              height: 18,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <DollarSign size={10} color="#fff" strokeWidth={2.5} />
+          </div>
+        </div>
+
+        {/* Text */}
+        <div>
+          <p
+            style={{
+              fontSize: 15,
+              fontWeight: 700,
+              color: "var(--brand-primary)",
+              marginBottom: 3,
+              lineHeight: 1.3,
+            }}
+          >
+            Want more personalized rates?
+          </p>
+          <p
+            style={{
+              fontSize: 13,
+              color: "#64748b",
+              fontWeight: 400,
+              lineHeight: 1.4,
+            }}
+          >
+            Get customized rates tailored to your needs.
+          </p>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <button
+        type="button"
+        style={{
+          background: "var(--brand-primary)",
+          color: "#ffffff",
+          border: "none",
+          borderRadius: 8,
+          padding: "10px 20px",
+          fontSize: 13,
+          fontWeight: 700,
+          cursor: "pointer",
+          fontFamily: "inherit",
+          whiteSpace: "nowrap",
+          flexShrink: 0,
+          transition: "background 0.15s ease",
+        }}
+        onMouseEnter={(e) =>
+          ((e.currentTarget as HTMLButtonElement).style.background =
+            "var(--brand-primary-dark)")
+        }
+        onMouseLeave={(e) =>
+          ((e.currentTarget as HTMLButtonElement).style.background =
+            "var(--brand-primary)")
+        }
+      >
+        Personalize my rate
+      </button>
+    </div>
+  );
+}
+
 /* ── Controls: loan term tabs + sort by ── */
 function ControlsBar({
   activeTerm,
@@ -342,7 +449,10 @@ export default function RateTable() {
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {(showAll ? displayed : displayed.slice(0, DEFAULT_VISIBLE)).map(
               (lender, i) => (
-                <RateCard key={lender.id} lender={lender} index={i} />
+                <Fragment key={lender.id}>
+                  <RateCard lender={lender} index={i} />
+                  {i === 2 && <PersonalizeRateBanner />}
+                </Fragment>
               )
             )}
           </div>
