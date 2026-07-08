@@ -168,7 +168,7 @@ function RateCard({ lender, index }: { lender: Lender; index: number }) {
               "var(--brand-cta-bg)")
           }
         >
-          Check rate
+          Get started
           <ArrowRight size={14} strokeWidth={2.5} />
         </a>
       </div>
