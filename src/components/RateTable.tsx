@@ -4,21 +4,61 @@ import { useState, useMemo } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { lenders, type Lender } from "@/data/lenders";
 
-/* ── Loan term tab options ── */
 const LOAN_TERMS = ["5 Year", "10 Year", "15 Year", "20 Year", "30 Year"];
 
-/* ── Parse "$700K" → 700000 for sort ── */
 function parseMaxAmount(s: string): number {
   const n = parseFloat(s.replace(/[^0-9.]/g, ""));
   return s.toUpperCase().includes("K") ? n * 1_000 : n * 1_000_000;
 }
 
-/* ── Single secondary stat ── */
-function Stat({ label, value }: { label: string; value: string }) {
+/* ── Thin vertical divider between stat sections ── */
+function Divider() {
   return (
-    <div>
-      <p style={secLabelStyle}>{label}</p>
-      <p style={secValueStyle}>{value}</p>
+    <div
+      style={{
+        width: 1,
+        background: "var(--brand-stat-divider)",
+        alignSelf: "stretch",
+        flexShrink: 0,
+        margin: "14px 0",
+      }}
+    />
+  );
+}
+
+/* ── One stat section inside the card ── */
+function StatSection({
+  label,
+  children,
+  width,
+}: {
+  label: string;
+  children: React.ReactNode;
+  width?: number | string;
+}) {
+  return (
+    <div
+      style={{
+        padding: "20px 26px",
+        flexShrink: width ? 0 : undefined,
+        flex: width ? undefined : "1 1 0",
+        width: width,
+        minWidth: 0,
+      }}
+    >
+      <p
+        style={{
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: "0.09em",
+          textTransform: "uppercase",
+          color: "#94a3b8",
+          marginBottom: 8,
+        }}
+      >
+        {label}
+      </p>
+      {children}
     </div>
   );
 }
@@ -29,55 +69,90 @@ function RateCard({ lender }: { lender: Lender }) {
     <div
       className="rate-card"
       style={{
-        borderRadius: 12,
-        border: "1px solid #ebebed",
-        background: "#ffffff",
-        overflow: "hidden",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
         display: "flex",
-        alignItems: "center",
-        padding: "20px 24px 20px 28px",
+        alignItems: "stretch",
+        background: "#ffffff",
+        border: "1px solid var(--brand-card-border)",
+        borderRadius: 12,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+        overflow: "hidden",
       }}
     >
-      {/* Rate — hero number, only bold element */}
-      <div style={{ flexShrink: 0, paddingRight: 32 }}>
-        <p style={heroLabelStyle}>Rate</p>
-        <p style={{ lineHeight: 1, margin: "5px 0 0" }}>
-          <span style={heroNumberStyle}>{lender.rate}</span>
-          <span style={heroUnitStyle}>%</span>
+      {/* ── Rate — hero, in brand blue ── */}
+      <StatSection label="Rate" width={170}>
+        <p style={{ lineHeight: 1 }}>
+          <span
+            style={{
+              fontSize: 28,
+              fontWeight: 800,
+              color: "var(--brand-primary)",
+              letterSpacing: "-0.03em",
+            }}
+          >
+            {lender.rate}
+          </span>
+          <span
+            style={{
+              fontSize: 17,
+              fontWeight: 700,
+              color: "var(--brand-primary)",
+              marginLeft: 1,
+            }}
+          >
+            %
+          </span>
         </p>
         <a
           href="#"
           onClick={(e) => e.preventDefault()}
-          style={feesLinkStyle}
+          className="fees-link"
+          style={{
+            display: "inline-block",
+            marginTop: 8,
+            fontSize: 11,
+            fontWeight: 600,
+            color: "var(--brand-link-color)",
+            textDecoration: "none",
+          }}
         >
           Fees &amp; conditions
         </a>
-      </div>
+      </StatSection>
 
-      {/* Hairline separator */}
-      <div style={{ width: 1, height: 42, background: "#ebebed", flexShrink: 0 }} />
+      <Divider />
 
-      {/* Secondary stats — light, understated */}
+      {/* ── APR ── */}
+      <StatSection label="APR">
+        <p style={boldStatStyle}>{lender.apr}%</p>
+      </StatSection>
+
+      <Divider />
+
+      {/* ── Loan term ── */}
+      <StatSection label="Loan term">
+        <p style={boldStatStyle}>{lender.loanTerm}</p>
+      </StatSection>
+
+      <Divider />
+
+      {/* ── Loan amount ── */}
+      <StatSection label="Loan amount">
+        <p style={boldStatStyle}>
+          {lender.loanAmountMin}–{lender.loanAmountMax}
+        </p>
+      </StatSection>
+
+      {/* ── CTA — slides in on hover ── */}
       <div
+        className="cta-cell"
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 40,
-          flex: 1,
-          paddingLeft: 32,
+          paddingRight: 24,
+          paddingLeft: 8,
+          flexShrink: 0,
         }}
       >
-        <Stat label="APR" value={`${lender.apr}%`} />
-        <Stat label="Loan term" value={lender.loanTerm} />
-        <Stat
-          label="Loan amount"
-          value={`${lender.loanAmountMin}–${lender.loanAmountMax}`}
-        />
-      </div>
-
-      {/* CTA — hidden by default, slides in on hover */}
-      <div className="cta-cell" style={{ flexShrink: 0, paddingLeft: 20 }}>
         <a
           href="#"
           onClick={(e) => e.preventDefault()}
@@ -92,14 +167,14 @@ function RateCard({ lender }: { lender: Lender }) {
           }
         >
           Check rate
-          <ArrowRight size={14} strokeWidth={2.5} />
+          <ArrowRight size={15} strokeWidth={2.5} />
         </a>
       </div>
     </div>
   );
 }
 
-/* ── Controls bar: loan term tabs + sort by ── */
+/* ── Controls: loan term tabs (left) + sort by (right) ── */
 function ControlsBar({
   activeTerm,
   onTermChange,
@@ -107,7 +182,7 @@ function ControlsBar({
   onSortChange,
 }: {
   activeTerm: string | null;
-  onTermChange: (term: string | null) => void;
+  onTermChange: (t: string | null) => void;
   sortBy: string;
   onSortChange: (v: string) => void;
 }) {
@@ -117,19 +192,19 @@ function ControlsBar({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 12,
+        marginBottom: 14,
+        gap: 12,
         flexWrap: "wrap",
-        gap: 10,
       }}
     >
-      {/* Left: Loan term tabs */}
+      {/* Loan term tabs */}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <span
           style={{
             fontSize: 12,
-            fontWeight: 600,
-            color: "#6b7280",
-            marginRight: 4,
+            fontWeight: 700,
+            color: "#64748b",
+            marginRight: 2,
             whiteSpace: "nowrap",
           }}
         >
@@ -143,13 +218,13 @@ function ControlsBar({
               type="button"
               onClick={() => onTermChange(active ? null : term)}
               style={{
-                padding: "5px 13px",
+                padding: "5px 14px",
                 borderRadius: 999,
-                border: `1px solid ${active ? "var(--brand-primary)" : "#e2e8f0"}`,
+                border: `1.5px solid ${active ? "var(--brand-primary)" : "#e2e8f0"}`,
                 background: active ? "var(--brand-primary)" : "#ffffff",
-                color: active ? "#ffffff" : "#4b5563",
+                color: active ? "#ffffff" : "#475569",
                 fontSize: 12,
-                fontWeight: active ? 600 : 500,
+                fontWeight: active ? 700 : 500,
                 cursor: "pointer",
                 fontFamily: "inherit",
                 transition: "all 0.15s ease",
@@ -167,7 +242,7 @@ function ControlsBar({
                 if (!active) {
                   const el = e.currentTarget as HTMLButtonElement;
                   el.style.borderColor = "#e2e8f0";
-                  el.style.color = "#4b5563";
+                  el.style.color = "#475569";
                   el.style.background = "#ffffff";
                 }
               }}
@@ -178,9 +253,16 @@ function ControlsBar({
         })}
       </div>
 
-      {/* Right: Sort by */}
+      {/* Sort by */}
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span style={{ fontSize: 12, fontWeight: 500, color: "#9ca3af", whiteSpace: "nowrap" }}>
+        <span
+          style={{
+            fontSize: 12,
+            fontWeight: 600,
+            color: "#94a3b8",
+            whiteSpace: "nowrap",
+          }}
+        >
           Sort by
         </span>
         <div style={{ position: "relative" }}>
@@ -193,7 +275,7 @@ function ControlsBar({
               borderRadius: 8,
               padding: "0 28px 0 11px",
               fontSize: 12,
-              fontWeight: 500,
+              fontWeight: 600,
               color: "#374151",
               background: "#ffffff",
               fontFamily: "inherit",
@@ -228,20 +310,16 @@ export default function RateTable() {
   const [sortBy, setSortBy] = useState("lowest-apr");
 
   const displayed = useMemo(() => {
-    // 1. Filter by loan term
     const termFilter = activeTerm?.toLowerCase() ?? null;
     const filtered = termFilter
       ? lenders.filter((l) => l.loanTerm.toLowerCase() === termFilter)
       : lenders;
 
-    // 2. Sort
     return [...filtered].sort((a, b) => {
-      if (sortBy === "lowest-apr") {
+      if (sortBy === "lowest-apr")
         return parseFloat(a.apr) - parseFloat(b.apr);
-      }
-      if (sortBy === "highest-amount") {
+      if (sortBy === "highest-amount")
         return parseMaxAmount(b.loanAmountMax) - parseMaxAmount(a.loanAmountMax);
-      }
       return 0;
     });
   }, [activeTerm, sortBy]);
@@ -258,26 +336,35 @@ export default function RateTable() {
       {displayed.length === 0 ? (
         <div
           style={{
-            padding: "40px 24px",
+            padding: "48px 24px",
             textAlign: "center",
-            color: "#9ca3af",
+            color: "#94a3b8",
             fontSize: 14,
-            background: "#fafafa",
+            fontWeight: 500,
+            background: "#f8fafc",
             borderRadius: 12,
-            border: "1px solid #ebebed",
+            border: "1px solid #e2e8f0",
           }}
         >
           No lenders found for this loan term.
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {displayed.map((lender) => (
             <RateCard key={lender.id} lender={lender} />
           ))}
         </div>
       )}
 
-      <p style={disclaimerStyle}>
+      <p
+        style={{
+          marginTop: 18,
+          fontSize: 11,
+          color: "#b0b7c3",
+          lineHeight: 1.7,
+          padding: "0 2px",
+        }}
+      >
         Rates shown are based on the personalized search criteria above. APR
         shown is for a $100,000 HELOC. Your actual rate may differ based on
         credit profile, loan-to-value ratio, and lender criteria. All rates as
@@ -295,77 +382,28 @@ export default function RateTable() {
 
 /* ── Style constants ── */
 
-const heroLabelStyle: React.CSSProperties = {
-  fontSize: 10,
-  fontWeight: 600,
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
-  color: "#b0b7c3",
-  margin: 0,
-};
-
-const heroNumberStyle: React.CSSProperties = {
-  fontSize: 32,
-  fontWeight: 800,
-  color: "#0f172a",
-  letterSpacing: "-0.03em",
-};
-
-const heroUnitStyle: React.CSSProperties = {
-  fontSize: 19,
+/** Secondary stats: bold + dark — fully legible, not muted */
+const boldStatStyle: React.CSSProperties = {
+  fontSize: 20,
   fontWeight: 700,
-  color: "#0f172a",
+  color: "#1e293b",
   letterSpacing: "-0.02em",
-  marginLeft: 1,
-};
-
-const feesLinkStyle: React.CSSProperties = {
-  display: "block",
-  marginTop: 6,
-  fontSize: 11,
-  fontWeight: 500,
-  color: "var(--brand-link-color)",
-  textDecoration: "none",
-};
-
-const secLabelStyle: React.CSSProperties = {
-  fontSize: 10,
-  fontWeight: 600,
-  letterSpacing: "0.07em",
-  textTransform: "uppercase",
-  color: "#b0b7c3",
-  margin: "0 0 5px",
-};
-
-const secValueStyle: React.CSSProperties = {
-  fontSize: 15,
-  fontWeight: 400,
-  color: "#6b7280",
-  letterSpacing: "-0.01em",
-  margin: 0,
+  lineHeight: 1.2,
 };
 
 const ctaStyle: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
-  gap: 7,
+  gap: 8,
   background: "var(--brand-cta-bg)",
   color: "var(--brand-cta-text)",
   borderRadius: "var(--brand-cta-radius)",
-  fontWeight: 600,
-  fontSize: 13,
-  padding: "10px 20px",
+  fontWeight: 700,
+  fontSize: 14,
+  padding: "11px 22px",
   textDecoration: "none",
   whiteSpace: "nowrap",
   fontFamily: "inherit",
   letterSpacing: "0.01em",
   transition: "background 0.15s ease",
-};
-
-const disclaimerStyle: React.CSSProperties = {
-  marginTop: 16,
-  fontSize: 11,
-  color: "#c4c9d4",
-  lineHeight: 1.7,
-  padding: "0 2px",
 };

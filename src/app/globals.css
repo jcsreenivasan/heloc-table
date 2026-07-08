@@ -3,45 +3,28 @@
 /* ================================================================
    WHITE-LABEL THEME VARIABLES
    To rebrand this table for a client, change only these values.
-   All colors, hover states, and interactive elements derive from
-   these CSS custom properties.
    ================================================================ */
 :root {
-  /* --- Primary brand color ---
-     Used for: buttons, links, icons, borders, hover highlights */
   --brand-primary: #2563eb;
   --brand-primary-dark: #1d4ed8;
   --brand-primary-light: #eff6ff;
   --brand-primary-border: #bfdbfe;
 
-  /* --- CTA Button --- */
   --brand-cta-bg: var(--brand-primary);
   --brand-cta-text: #ffffff;
   --brand-cta-hover-bg: var(--brand-primary-dark);
   --brand-cta-radius: 8px;
-  --brand-cta-font-weight: 600;
 
-  /* --- Card hover --- */
-  --brand-card-hover-bg: var(--brand-primary-light);
-  --brand-card-hover-border: var(--brand-primary-border);
-  --brand-card-border: #e5e7eb;
+  --brand-card-border: #e2e8f0;
+  --brand-stat-divider: #e8edf2;
 
-  /* --- Typography --- */
   --brand-text-primary: #111827;
   --brand-text-secondary: #6b7280;
   --brand-text-muted: #9ca3af;
   --brand-link-color: var(--brand-primary);
 
-  /* --- Filter bar --- */
-  --brand-filter-bg: #ffffff;
   --brand-filter-border: #d1d5db;
-  --brand-filter-label: #111827;
-
-  /* --- Page background --- */
-  --brand-page-bg: #f3f4f6;
-
-  /* --- Stat divider inside cards --- */
-  --brand-stat-divider: #e5e7eb;
+  --brand-page-bg: #f1f5f9;
 }
 
 * {
@@ -53,28 +36,31 @@
 body {
   background: var(--brand-page-bg);
   color: var(--brand-text-primary);
-  font-family: var(--font-open-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-open-sans), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ---- Rate card hover: subtle shift, no heavy color change ---- */
+/* ---- Card base + hover ---- */
 .rate-card {
-  transition: border-color 0.18s ease, box-shadow 0.2s ease,
-    background-color 0.18s ease;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.22s ease;
 }
 
 .rate-card:hover {
-  background-color: #fafcff;
-  border-color: #c7d7fd !important;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.07);
+  background-color: var(--brand-primary-light) !important;
+  border-color: var(--brand-primary-border) !important;
+  /* inset left accent bar without any layout shift */
+  box-shadow: inset 5px 0 0 var(--brand-primary),
+    0 6px 24px rgba(37, 99, 235, 0.13);
 }
 
-/* ---- CTA slides in from right on card hover ---- */
+/* ---- CTA slides in from right on hover ---- */
 .rate-card .cta-cell {
   opacity: 0;
-  transform: translateX(16px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateX(18px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
   pointer-events: none;
 }
 
@@ -82,6 +68,11 @@ body {
   opacity: 1;
   transform: translateX(0);
   pointer-events: auto;
+}
+
+/* ---- Fees link underline on hover ---- */
+.fees-link:hover {
+  text-decoration: underline;
 }
 
 /* ---- Remove number input spinners ---- */
@@ -93,27 +84,26 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-/* ---- Focus ring using brand color ---- */
+/* ---- Focus ring ---- */
 input:focus,
 select:focus {
   outline: 2px solid var(--brand-primary);
   outline-offset: -1px;
 }
 
-/* ---- Tooltip on info icons ---- */
+/* ---- Tooltip ---- */
 .info-tooltip {
   position: relative;
   display: inline-flex;
   align-items: center;
 }
-
 .info-tooltip:hover::after {
   content: attr(data-tooltip);
   position: absolute;
   bottom: calc(100% + 7px);
   left: 50%;
   transform: translateX(-50%);
-  background: #1f2937;
+  background: #1e293b;
   color: #fff;
   padding: 6px 10px;
   border-radius: 6px;
@@ -121,5 +111,5 @@ select:focus {
   white-space: nowrap;
   z-index: 50;
   pointer-events: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
 }
