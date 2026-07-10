@@ -144,6 +144,13 @@ function RateCard({ lender, index }: { lender: Lender; index: number }) {
         </p>
       </StatSection>
 
+      <Divider />
+
+      {/* Monthly payment */}
+      <StatSection label="Monthly payment">
+        <p style={boldStatStyle}>{lender.monthlyPayment}</p>
+      </StatSection>
+
       {/* CTA — slides in on hover */}
       <div
         className="cta-cell"

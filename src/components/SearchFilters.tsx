@@ -83,9 +83,9 @@ export default function SearchFilters({ onSeeRates }: Props) {
           <MoneyField value={fmt(mortgageBalance)} onChange={(e) => handleNum(e, setMortgageBalance)} />
         </div>
 
-        {/* 5 — Loan amount */}
+        {/* 5 — HELOC amount */}
         <div>
-          <label style={labelStyle}>Loan amount</label>
+          <label style={labelStyle}>HELOC amount</label>
           <MoneyField value={fmt(loanAmount)} onChange={(e) => handleNum(e, setLoanAmount)} />
         </div>
 

@@ -21,6 +21,7 @@ export interface Lender {
   loanTerm: string;          // e.g. "10 year"
   loanAmountMin: string;     // e.g. "$15K"
   loanAmountMax: string;     // e.g. "$700K"
+  monthlyPayment: string;    // e.g. "$1,092/mo" — based on $100K loan
   score: number;             // e.g. 4.8
   ctaLabel?: string;         // override CTA text, defaults to "Next →"
   details: LenderDetails;
@@ -39,6 +40,7 @@ export const lenders: Lender[] = [
     loanTerm: "10 year",
     loanAmountMin: "$15K",
     loanAmountMax: "$700K",
+    monthlyPayment: "$1,092/mo",
     score: 4.8,
     details: {
       drawPeriod: "10 years",
@@ -63,6 +65,7 @@ export const lenders: Lender[] = [
     loanTerm: "15 year",
     loanAmountMin: "$15K",
     loanAmountMax: "$700K",
+    monthlyPayment: "$837/mo",
     score: 4.8,
     details: {
       drawPeriod: "10 years",
@@ -87,6 +90,7 @@ export const lenders: Lender[] = [
     loanTerm: "10 year",
     loanAmountMin: "$15K",
     loanAmountMax: "$750K",
+    monthlyPayment: "$1,113/mo",
     score: 4.5,
     details: {
       drawPeriod: "5 years",
@@ -111,6 +115,7 @@ export const lenders: Lender[] = [
     loanTerm: "15 year",
     loanAmountMin: "$15K",
     loanAmountMax: "$750K",
+    monthlyPayment: "$847/mo",
     score: 4.5,
     details: {
       drawPeriod: "5 years",
@@ -135,6 +140,7 @@ export const lenders: Lender[] = [
     loanTerm: "10 year",
     loanAmountMin: "$25K",
     loanAmountMax: "$500K",
+    monthlyPayment: "$1,123/mo",
     score: 4.6,
     details: {
       drawPeriod: "10 years",
@@ -159,6 +165,7 @@ export const lenders: Lender[] = [
     loanTerm: "10 year",
     loanAmountMin: "$10K",
     loanAmountMax: "$200K",
+    monthlyPayment: "$1,135/mo",
     score: 4.7,
     details: {
       drawPeriod: "10 years",
@@ -183,6 +190,7 @@ export const lenders: Lender[] = [
     loanTerm: "20 year",
     loanAmountMin: "$25K",
     loanAmountMax: "$500K",
+    monthlyPayment: "$753/mo",
     score: 4.4,
     details: {
       drawPeriod: "10 years",
