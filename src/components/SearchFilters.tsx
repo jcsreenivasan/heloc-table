@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Grid2X2, Info } from "lucide-react";
+import { ChevronDown, Grid2X2 } from "lucide-react";
 
 interface Props {
   onSeeRates?: () => void;
@@ -28,103 +28,109 @@ export default function SearchFilters({ onSeeRates }: Props) {
 
   return (
     <div>
-      {/* Title — black */}
-      <p style={titleStyle}>PERSONALIZE YOUR SEARCH</p>
+      <p style={titleStyle}>Personalize your search</p>
 
-      {/* 5-column grid — all fields equal 1fr width */}
       <div style={gridStyle}>
 
         {/* 1 — ZIP Code */}
-        <div>
-          <label style={labelStyle}>ZIP Code</label>
-          <div style={{ position: "relative" }}>
+        <FloatingField label="ZIP Code">
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <input
               type="text"
               value={zipCode}
               onChange={(e) => setZipCode(e.target.value.slice(0, 5))}
               maxLength={5}
               placeholder="00000"
-              style={{ ...inputBase, paddingRight: 36 }}
+              style={flatInput}
             />
-            <button style={iconBtnStyle} type="button">
-              <Grid2X2 size={12} color="#9ca3af" />
-            </button>
+            <Grid2X2 size={13} color="#9ca3af" style={{ flexShrink: 0 }} />
           </div>
-        </div>
+        </FloatingField>
 
         {/* 2 — Loan type */}
-        <div>
-          <label style={labelStyle}>
-            Loan type
-            <span
-              className="info-tooltip"
-              data-tooltip="Type of home equity loan"
-              style={{ cursor: "help" }}
-            >
-              <Info size={11} color="var(--brand-primary)" />
-            </span>
-          </label>
-          <SelectField value={loanType} onChange={(e) => setLoanType(e.target.value)}>
+        <FloatingField label="Loan type">
+          <FlatSelect value={loanType} onChange={(e) => setLoanType(e.target.value)}>
             <option value="HELOC">HELOC</option>
             <option value="Home Equity Loan">Home Equity Loan</option>
             <option value="Cash-Out Refinance">Cash-Out Refinance</option>
-          </SelectField>
-        </div>
+          </FlatSelect>
+        </FloatingField>
 
         {/* 3 — Property value */}
-        <div>
-          <label style={labelStyle}>Property value</label>
-          <MoneyField value={fmt(propertyValue)} onChange={(e) => handleNum(e, setPropertyValue)} />
-        </div>
+        <FloatingField label="Property value">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={prefixStyle}>$</span>
+            <input
+              type="text"
+              value={fmt(propertyValue)}
+              onChange={(e) => handleNum(e, setPropertyValue)}
+              placeholder="0"
+              style={flatInput}
+            />
+          </div>
+        </FloatingField>
 
         {/* 4 — Remaining mortgage balance */}
-        <div>
-          <label style={labelStyle}>Remaining mortgage balance</label>
-          <MoneyField value={fmt(mortgageBalance)} onChange={(e) => handleNum(e, setMortgageBalance)} />
-        </div>
+        <FloatingField label="Mortgage balance">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={prefixStyle}>$</span>
+            <input
+              type="text"
+              value={fmt(mortgageBalance)}
+              onChange={(e) => handleNum(e, setMortgageBalance)}
+              placeholder="0"
+              style={flatInput}
+            />
+          </div>
+        </FloatingField>
 
         {/* 5 — HELOC amount */}
-        <div>
-          <label style={labelStyle}>HELOC amount</label>
-          <MoneyField value={fmt(loanAmount)} onChange={(e) => handleNum(e, setLoanAmount)} />
-        </div>
+        <FloatingField label="HELOC amount">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={prefixStyle}>$</span>
+            <input
+              type="text"
+              value={fmt(loanAmount)}
+              onChange={(e) => handleNum(e, setLoanAmount)}
+              placeholder="0"
+              style={flatInput}
+            />
+          </div>
+        </FloatingField>
 
         {/* 6 — Credit score */}
-        <div>
-          <label style={labelStyle}>Credit score</label>
-          <SelectField value={creditScore} onChange={(e) => setCreditScore(e.target.value)}>
+        <FloatingField label="Credit score">
+          <FlatSelect value={creditScore} onChange={(e) => setCreditScore(e.target.value)}>
             <option value="exceptional">Exceptional (800+)</option>
             <option value="very-good">Very good (740–799)</option>
             <option value="good">Good (670–739)</option>
             <option value="fair">Fair (580–669)</option>
             <option value="poor">Poor (below 580)</option>
-          </SelectField>
-        </div>
+          </FlatSelect>
+        </FloatingField>
 
         {/* 7 — Property use */}
-        <div>
-          <label style={labelStyle}>Property use</label>
-          <SelectField value={propertyUse} onChange={(e) => setPropertyUse(e.target.value)}>
+        <FloatingField label="Property use">
+          <FlatSelect value={propertyUse} onChange={(e) => setPropertyUse(e.target.value)}>
             <option value="primary">Primary Residence</option>
             <option value="second">Second Home</option>
             <option value="investment">Investment Property</option>
-          </SelectField>
-        </div>
+          </FlatSelect>
+        </FloatingField>
 
         {/* 8 — Property type */}
-        <div>
-          <label style={labelStyle}>Property type</label>
-          <SelectField value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
+        <FloatingField label="Property type">
+          <FlatSelect value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
             <option value="single">Single Family</option>
             <option value="condo">Condo / Co-op</option>
             <option value="townhouse">Townhouse</option>
             <option value="multi">Multi-Family</option>
             <option value="manufactured">Manufactured</option>
-          </SelectField>
-        </div>
+          </FlatSelect>
+        </FloatingField>
 
-        {/* 9 — See Rates button (aligns to bottom of cell, same height as inputs) */}
-        <div style={{ alignSelf: "end" }}>
+        {/* 9 — See Rates button */}
+        <div style={{ alignSelf: "stretch", display: "flex", alignItems: "flex-end" }}>
           <button
             type="button"
             onClick={onSeeRates}
@@ -149,7 +155,46 @@ export default function SearchFilters({ onSeeRates }: Props) {
 
 /* ── Sub-components ── */
 
-function SelectField({
+function FloatingField({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className="floating-field"
+      style={{
+        position: "relative",
+        border: "1px solid #d1d5db",
+        borderRadius: 6,
+        padding: "13px 11px 8px",
+        transition: "border-color 0.15s ease",
+      }}
+    >
+      <span
+        style={{
+          position: "absolute",
+          top: -8,
+          left: 10,
+          fontSize: 11,
+          color: "#6b7280",
+          background: "#fff",
+          padding: "0 3px",
+          lineHeight: 1,
+          whiteSpace: "nowrap",
+          pointerEvents: "none",
+        }}
+      >
+        {label}
+      </span>
+      {children}
+    </div>
+  );
+}
+
+function FlatSelect({
   value,
   onChange,
   children,
@@ -159,58 +204,28 @@ function SelectField({
   children: React.ReactNode;
 }) {
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
       <select
         value={value}
         onChange={onChange}
-        style={{ ...inputBase, appearance: "none", paddingRight: 28, cursor: "pointer" }}
+        style={{
+          ...flatInput,
+          appearance: "none",
+          paddingRight: 18,
+          cursor: "pointer",
+        }}
       >
         {children}
       </select>
       <ChevronDown
-        size={14}
+        size={13}
         color="#9ca3af"
         style={{
           position: "absolute",
-          right: 9,
-          top: "50%",
-          transform: "translateY(-50%)",
+          right: 0,
           pointerEvents: "none",
+          flexShrink: 0,
         }}
-      />
-    </div>
-  );
-}
-
-function MoneyField({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
-  return (
-    <div style={{ position: "relative" }}>
-      <span
-        style={{
-          position: "absolute",
-          left: 10,
-          top: "50%",
-          transform: "translateY(-50%)",
-          fontSize: 13,
-          color: "#9ca3af",
-          pointerEvents: "none",
-          zIndex: 1,
-        }}
-      >
-        $
-      </span>
-      <input
-        type="text"
-        value={value}
-        onChange={onChange}
-        placeholder="0"
-        style={{ ...inputBase, paddingLeft: 20 }}
       />
     </div>
   );
@@ -219,69 +234,46 @@ function MoneyField({
 /* ── Styles ── */
 
 const titleStyle: React.CSSProperties = {
-  fontWeight: 700,
-  fontSize: 11,
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
-  color: "#111827",   /* black */
-  marginBottom: 16,
+  fontWeight: 500,
+  fontSize: 13,
+  color: "#6b7280",
+  marginBottom: 20,
 };
 
 const gridStyle: React.CSSProperties = {
   display: "grid",
   gridTemplateColumns: "repeat(5, 1fr)",
-  gap: "14px 12px",
+  gap: "20px 12px",
 };
 
-const labelStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 4,
-  fontWeight: 600,
-  fontSize: 12,
-  color: "#374151",
-  marginBottom: 6,
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-};
-
-const inputBase: React.CSSProperties = {
+const flatInput: React.CSSProperties = {
   width: "100%",
-  height: 40,
-  border: "1px solid var(--brand-filter-border)",
-  borderRadius: 8,
-  padding: "0 11px",
-  fontSize: 13,
-  color: "#111827",
-  background: "#fff",
+  border: "none",
   outline: "none",
+  fontSize: 14,
+  color: "#111827",
+  background: "transparent",
   fontFamily: "inherit",
-  boxSizing: "border-box",
+  padding: 0,
+  lineHeight: "22px",
 };
 
-const iconBtnStyle: React.CSSProperties = {
-  position: "absolute",
-  right: 7,
-  top: "50%",
-  transform: "translateY(-50%)",
-  background: "#f9fafb",
-  border: "1px solid var(--brand-filter-border)",
-  borderRadius: 5,
-  padding: "3px 5px",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
+const prefixStyle: React.CSSProperties = {
+  color: "#9ca3af",
+  fontSize: 14,
+  marginRight: 2,
+  flexShrink: 0,
+  lineHeight: "22px",
 };
 
 const seeRatesStyle: React.CSSProperties = {
   width: "100%",
-  height: 40,
+  height: 48,
   background: "var(--brand-primary)",
   color: "#ffffff",
   border: "none",
-  borderRadius: 8,
-  fontSize: 13,
+  borderRadius: 6,
+  fontSize: 14,
   fontWeight: 700,
   cursor: "pointer",
   fontFamily: "inherit",

@@ -61,11 +61,8 @@ body {
 }
 
 .rate-card:hover {
-  background-color: var(--brand-primary-light) !important;
   border-color: var(--brand-primary-border) !important;
-  /* inset left accent bar without any layout shift */
-  box-shadow: inset 5px 0 0 var(--brand-primary),
-    0 6px 24px rgba(37, 99, 235, 0.13);
+  box-shadow: 0 2px 16px rgba(37, 99, 235, 0.1);
 }
 
 /* ---- CTA slides in from right on hover ---- */
@@ -97,10 +94,14 @@ input[type="number"] {
 }
 
 /* ---- Focus ring ---- */
-input:focus,
-select:focus {
-  outline: 2px solid var(--brand-primary);
-  outline-offset: -1px;
+/* Floating-label wrapper gets a blue border on focus-within */
+.floating-field:focus-within {
+  border-color: var(--brand-primary) !important;
+}
+/* Suppress native outline inside floating fields; inputs are bare */
+.floating-field input:focus,
+.floating-field select:focus {
+  outline: none;
 }
 
 /* ---- Tooltip ---- */
