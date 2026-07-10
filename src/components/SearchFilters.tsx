@@ -175,7 +175,7 @@ function FloatingField({
           top: -8,
           left: 10,
           fontSize: 11,
-          color: "#6b7280",
+          color: "#757575",
           background: "#fff",
           padding: "0 3px",
           lineHeight: 1,
