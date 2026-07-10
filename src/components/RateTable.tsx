@@ -243,7 +243,7 @@ function PersonalizeRateBanner() {
         </div>
         <div>
           <p style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 3, lineHeight: 1.3 }}>
-            Want more personalized rates?
+            Ready to start your application?
           </p>
           <p style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.4 }}>
             Get customized rates tailored to your needs.
@@ -275,7 +275,7 @@ function PersonalizeRateBanner() {
             "var(--brand-primary)")
         }
       >
-        Personalize my rate
+        Get started
       </button>
     </div>
   );
