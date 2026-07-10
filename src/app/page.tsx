@@ -31,7 +31,6 @@ export default function Home() {
               style={{
                 background: "#f8fafc",
                 borderRadius: 12,
-                border: "1px solid #e5e7eb",
                 padding: "20px 24px",
               }}
             >

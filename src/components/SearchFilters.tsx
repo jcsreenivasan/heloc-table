@@ -28,8 +28,6 @@ export default function SearchFilters({ onSeeRates }: Props) {
 
   return (
     <div>
-      <p style={titleStyle}>Personalize your search</p>
-
       <div style={gridStyle}>
 
         {/* 1 — ZIP Code */}
@@ -170,6 +168,7 @@ function FloatingField({
         border: "1px solid #d1d5db",
         borderRadius: 6,
         padding: "13px 11px 8px",
+        background: "#ffffff",
         transition: "border-color 0.15s ease",
       }}
     >
