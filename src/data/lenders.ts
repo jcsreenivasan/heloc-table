@@ -5,25 +5,30 @@ export interface LenderDetails {
   applicationFee: string;
   appraisalFee: string;
   annualFee: string;
+  originationFee: string;
+  underwritingFee: string;
+  totalUpfrontCosts: string;
+  fundsAvailableIn: string;
   minCreditScore: string;
   maxLTV: string;
 }
 
 export interface Lender {
   id: number;
-  productName: string;       // e.g. "Achieve Loans HELOC"
-  lenderName: string;        // e.g. "Achieve Loans"
-  logoInitials: string;      // e.g. "A"
-  logoColor: string;         // brand hex color for logo placeholder
+  productName: string;
+  lenderName: string;
+  logoInitials: string;
+  logoColor: string;
   nmls: string;
-  rate: string;              // e.g. "5.625"
-  apr: string;               // e.g. "5.630"
-  loanTerm: string;          // e.g. "10 year"
-  loanAmountMin: string;     // e.g. "$15K"
-  loanAmountMax: string;     // e.g. "$700K"
-  monthlyPayment: string;    // e.g. "$1,092/mo" — based on $100K loan
-  score: number;             // e.g. 4.8
-  ctaLabel?: string;         // override CTA text, defaults to "Next →"
+  rate: string;
+  apr: string;
+  loanTerm: string;
+  loanAmountMin: string;
+  loanAmountMax: string;
+  monthlyPayment: string;
+  highlights: string[];
+  score: number;
+  ctaLabel?: string;
   details: LenderDetails;
 }
 
@@ -41,6 +46,11 @@ export const lenders: Lender[] = [
     loanAmountMin: "$15K",
     loanAmountMax: "$700K",
     monthlyPayment: "$1,092/mo",
+    highlights: [
+      "Consolidate high-interest debt into a single lower monthly payment",
+      "Pre-qualify in minutes with no impact to your credit score",
+      "No refinance required — access up to $700K of your equity",
+    ],
     score: 4.8,
     details: {
       drawPeriod: "10 years",
@@ -49,6 +59,10 @@ export const lenders: Lender[] = [
       applicationFee: "$0",
       appraisalFee: "$0",
       annualFee: "$0",
+      originationFee: "$0",
+      underwritingFee: "$0",
+      totalUpfrontCosts: "$0",
+      fundsAvailableIn: "7–10 business days",
       minCreditScore: "640",
       maxLTV: "85%",
     },
@@ -66,6 +80,11 @@ export const lenders: Lender[] = [
     loanAmountMin: "$15K",
     loanAmountMax: "$700K",
     monthlyPayment: "$837/mo",
+    highlights: [
+      "Consolidate high-interest debt into a single lower monthly payment",
+      "Pre-qualify in minutes with no impact to your credit score",
+      "No refinance required — access up to $700K of your equity",
+    ],
     score: 4.8,
     details: {
       drawPeriod: "10 years",
@@ -74,6 +93,10 @@ export const lenders: Lender[] = [
       applicationFee: "$0",
       appraisalFee: "$0",
       annualFee: "$0",
+      originationFee: "$0",
+      underwritingFee: "$0",
+      totalUpfrontCosts: "$0",
+      fundsAvailableIn: "7–10 business days",
       minCreditScore: "640",
       maxLTV: "85%",
     },
@@ -91,6 +114,11 @@ export const lenders: Lender[] = [
     loanAmountMin: "$15K",
     loanAmountMax: "$750K",
     monthlyPayment: "$1,113/mo",
+    highlights: [
+      "100% online application — no in-person visits required",
+      "Some of the fastest funding in the industry",
+      "Automated appraisal means no appraisal fee",
+    ],
     score: 4.5,
     details: {
       drawPeriod: "5 years",
@@ -99,6 +127,10 @@ export const lenders: Lender[] = [
       applicationFee: "$0",
       appraisalFee: "$0 (automated)",
       annualFee: "$0",
+      originationFee: "$0",
+      underwritingFee: "$0",
+      totalUpfrontCosts: "$0",
+      fundsAvailableIn: "As few as 5 business days",
       minCreditScore: "680",
       maxLTV: "90%",
     },
@@ -116,6 +148,11 @@ export const lenders: Lender[] = [
     loanAmountMin: "$15K",
     loanAmountMax: "$750K",
     monthlyPayment: "$847/mo",
+    highlights: [
+      "100% online application — no in-person visits required",
+      "Some of the fastest funding in the industry",
+      "Automated appraisal means no appraisal fee",
+    ],
     score: 4.5,
     details: {
       drawPeriod: "5 years",
@@ -124,6 +161,10 @@ export const lenders: Lender[] = [
       applicationFee: "$0",
       appraisalFee: "$0 (automated)",
       annualFee: "$0",
+      originationFee: "$0",
+      underwritingFee: "$0",
+      totalUpfrontCosts: "$0",
+      fundsAvailableIn: "As few as 5 business days",
       minCreditScore: "680",
       maxLTV: "90%",
     },
@@ -141,6 +182,11 @@ export const lenders: Lender[] = [
     loanAmountMin: "$25K",
     loanAmountMax: "$500K",
     monthlyPayment: "$1,123/mo",
+    highlights: [
+      "Access up to 89.99% of your home's equity",
+      "Flexible draw options with no prepayment penalties",
+      "Loan amounts ranging from $25K to $500K",
+    ],
     score: 4.6,
     details: {
       drawPeriod: "10 years",
@@ -149,6 +195,10 @@ export const lenders: Lender[] = [
       applicationFee: "$0",
       appraisalFee: "Varies",
       annualFee: "$0",
+      originationFee: "$0",
+      underwritingFee: "$0",
+      totalUpfrontCosts: "Varies by state",
+      fundsAvailableIn: "14–21 business days",
       minCreditScore: "680",
       maxLTV: "89.9%",
     },
@@ -166,6 +216,11 @@ export const lenders: Lender[] = [
     loanAmountMin: "$10K",
     loanAmountMax: "$200K",
     monthlyPayment: "$1,135/mo",
+    highlights: [
+      "Rate match guarantee — we'll beat any competitor's rate",
+      "Low-cost option with no closing costs on select products",
+      "Family-owned lender serving customers since 1938",
+    ],
     score: 4.7,
     details: {
       drawPeriod: "10 years",
@@ -174,6 +229,10 @@ export const lenders: Lender[] = [
       applicationFee: "$65",
       appraisalFee: "$0",
       annualFee: "$65",
+      originationFee: "$0",
+      underwritingFee: "$0",
+      totalUpfrontCosts: "$65",
+      fundsAvailableIn: "21–30 business days",
       minCreditScore: "620",
       maxLTV: "80%",
     },
@@ -191,6 +250,11 @@ export const lenders: Lender[] = [
     loanAmountMin: "$25K",
     loanAmountMax: "$500K",
     monthlyPayment: "$753/mo",
+    highlights: [
+      "Open to everyone — no military affiliation required to join",
+      "Competitive credit union rates with no hidden fees",
+      "Annual fee waived for the first year",
+    ],
     score: 4.4,
     details: {
       drawPeriod: "10 years",
@@ -199,6 +263,10 @@ export const lenders: Lender[] = [
       applicationFee: "$0",
       appraisalFee: "$0–$550",
       annualFee: "$99 (waived 1st yr)",
+      originationFee: "$0",
+      underwritingFee: "$0",
+      totalUpfrontCosts: "$99",
+      fundsAvailableIn: "14–21 business days",
       minCreditScore: "660",
       maxLTV: "90%",
     },

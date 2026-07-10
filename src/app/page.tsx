@@ -25,16 +25,22 @@ export default function Home() {
             boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
           }}
         >
-          {/* Filter section */}
-          <div style={{ padding: "24px 28px 20px" }}>
-            <SearchFilters onSeeRates={() => setRefreshKey((k) => k + 1)} />
+          {/* Filter section — grey rounded card for visual separation */}
+          <div style={{ padding: "20px 24px 16px" }}>
+            <div
+              style={{
+                background: "#f8fafc",
+                borderRadius: 12,
+                border: "1px solid #e5e7eb",
+                padding: "20px 24px",
+              }}
+            >
+              <SearchFilters onSeeRates={() => setRefreshKey((k) => k + 1)} />
+            </div>
           </div>
 
-          {/* Divider */}
-          <div style={{ height: 1, background: "#e5e7eb" }} />
-
           {/* Rate cards — key forces remount + fade-in on See Rates click */}
-          <div style={{ padding: "20px 28px 24px" }}>
+          <div style={{ padding: "8px 24px 24px" }}>
             <RateTable key={refreshKey} />
           </div>
         </div>
