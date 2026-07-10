@@ -29,7 +29,7 @@ export default function Home() {
           <div style={{ padding: "20px 24px 16px" }}>
             <div
               style={{
-                background: "#f8fafc",
+                background: "#F9FAFB",
                 borderRadius: 12,
                 padding: "20px 24px",
               }}

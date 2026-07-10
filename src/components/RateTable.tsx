@@ -60,7 +60,7 @@ function FeesModal({ lender, onClose }: { lender: Lender; onClose: () => void })
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "min(880px, 94vw)",
+          width: "min(560px, 94vw)",
           maxHeight: "88vh",
           background: "#ffffff",
           borderRadius: 16,
@@ -82,14 +82,9 @@ function FeesModal({ lender, onClose }: { lender: Lender; onClose: () => void })
             flexShrink: 0,
           }}
         >
-          <div>
-            <h2 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: 0 }}>
-              {lender.lenderName}
-            </h2>
-            <p style={{ fontSize: 13, color: "#6b7280", marginTop: 3 }}>
-              {lender.rate}% Rate · {lender.apr}% APR · {lender.loanTerm}
-            </p>
-          </div>
+          <h2 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: 0 }}>
+            Fees &amp; conditions
+          </h2>
           <button
             onClick={onClose}
             style={{
@@ -117,99 +112,39 @@ function FeesModal({ lender, onClose }: { lender: Lender; onClose: () => void })
         </div>
 
         {/* ── Scrollable body ── */}
-        <div style={{ overflow: "auto", padding: "28px" }}>
+        <div style={{ overflow: "auto", padding: "24px 28px" }}>
 
-          {/* Three-column layout */}
+          {/* Finance charges table */}
+          <h3 style={{ ...modalColTitle, marginBottom: 12 }}>Finance charges</h3>
+          {feeRows.map((row) => (
+            <div
+              key={row.label}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                padding: "10px 0",
+                borderBottom: "1px solid #f1f5f9",
+                fontSize: 13,
+                color: "#374151",
+              }}
+            >
+              <span>{row.label}</span>
+              <span style={{ fontWeight: 500 }}>{row.value}</span>
+            </div>
+          ))}
+          {/* Total */}
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr 1fr",
-              gap: "0 36px",
-              marginBottom: 28,
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "14px 0 20px",
+              fontSize: 14,
+              fontWeight: 700,
+              color: "#111827",
             }}
           >
-            {/* Column 1 — Finance charges */}
-            <div>
-              <h3 style={modalColTitle}>Finance charges</h3>
-              {feeRows.map((row) => (
-                <div
-                  key={row.label}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    padding: "10px 0",
-                    borderBottom: "1px solid #f1f5f9",
-                    fontSize: 13,
-                    color: "#374151",
-                  }}
-                >
-                  <span>{row.label}</span>
-                  <span style={{ fontWeight: 500 }}>{row.value}</span>
-                </div>
-              ))}
-              {/* Total */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  padding: "14px 0 0",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  color: "#111827",
-                }}
-              >
-                <span>Total upfront costs</span>
-                <span>{details.totalUpfrontCosts}</span>
-              </div>
-            </div>
-
-            {/* Column 2 — About the lender */}
-            <div>
-              <h3 style={modalColTitle}>About the lender</h3>
-              <ul style={{ paddingLeft: 18, margin: 0 }}>
-                {lender.highlights.map((h, i) => (
-                  <li
-                    key={i}
-                    style={{
-                      fontSize: 13,
-                      color: "#374151",
-                      marginBottom: 12,
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {h}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 3 — Loan details */}
-            <div>
-              <h3 style={modalColTitle}>Loan details</h3>
-
-              <div style={{ marginBottom: 18 }}>
-                <p style={modalDetailLabel}>Minimum credit score</p>
-                <p style={modalDetailValue}>{details.minCreditScore}</p>
-              </div>
-
-              <div style={{ marginBottom: 18 }}>
-                <p style={modalDetailLabel}>Repayment terms</p>
-                <p style={modalDetailValue}>
-                  {details.drawPeriod} draw period,{" "}
-                  {details.repaymentPeriod} repayment
-                </p>
-              </div>
-
-              <div style={{ marginBottom: 18 }}>
-                <p style={modalDetailLabel}>Max loan-to-value</p>
-                <p style={modalDetailValue}>{details.maxLTV}</p>
-              </div>
-
-              <div>
-                <p style={modalDetailLabel}>Funds available in</p>
-                <p style={modalDetailValue}>{details.fundsAvailableIn}</p>
-              </div>
-            </div>
+            <span>Total upfront costs</span>
+            <span>{details.totalUpfrontCosts}</span>
           </div>
 
           {/* Legal text box */}
@@ -750,11 +685,11 @@ export default function RateTable() {
 /* ── Style constants ── */
 
 const valueStyle: React.CSSProperties = {
-  fontSize: 20,
+  fontSize: 16,
   fontWeight: 700,
   color: "#111827",
   lineHeight: 1.2,
-  letterSpacing: "-0.02em",
+  letterSpacing: "-0.01em",
 };
 
 const sublabelStyle: React.CSSProperties = {
