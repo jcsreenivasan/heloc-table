@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Grid2X2 } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 interface Props {
   onSeeRates?: () => void;
@@ -32,17 +32,14 @@ export default function SearchFilters({ onSeeRates }: Props) {
 
         {/* 1 — ZIP Code */}
         <FloatingField label="ZIP Code">
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <input
-              type="text"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value.slice(0, 5))}
-              maxLength={5}
-              placeholder="00000"
-              style={flatInput}
-            />
-            <Grid2X2 size={13} color="#9ca3af" style={{ flexShrink: 0 }} />
-          </div>
+          <input
+            type="text"
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value.slice(0, 5))}
+            maxLength={5}
+            placeholder="00000"
+            style={flatInput}
+          />
         </FloatingField>
 
         {/* 2 — Loan type */}
@@ -165,7 +162,7 @@ function FloatingField({
       className="floating-field"
       style={{
         position: "relative",
-        border: "1px solid #d1d5db",
+        border: "1px solid #757575",
         borderRadius: 6,
         padding: "13px 11px 8px",
         background: "#ffffff",
